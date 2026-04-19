@@ -1,0 +1,14 @@
+# Конфигурация Netlify для Next.js
+# Этот файл говорит Netlify как собирать и деплоить сайт
+
+[build]
+  # Команда сборки
+  command = "npm run build"
+  # Папка с собранным сайтом (Next.js использует .next)
+  publish = ".next"
+
+[build.environment]
+  # Версия Node.js (рекомендуется LTS)
+  NODE_VERSION = "20"
+  # Убираем предупреждения от npm
+  NPM_FLAGS = "--legacy-peer-deps"

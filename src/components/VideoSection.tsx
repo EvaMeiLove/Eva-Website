@@ -33,7 +33,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
       >
-        ✦ мои любимые видео ✦
+        ✦ видео ✦
       </h2>
 
       <div className="glass-card rounded-3xl overflow-hidden">

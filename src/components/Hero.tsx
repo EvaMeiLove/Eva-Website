@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { SiteConfig } from "@/config/site.config";
@@ -52,6 +53,9 @@ const avatarVariants = {
 };
 
 export default function Hero({ profile }: HeroProps) {
+  // Ошибка загрузки аватара — показываем заглушку
+  const [avatarError, setAvatarError] = useState(false);
+
   return (
     <motion.section
       className="flex flex-col items-center text-center gap-6"
@@ -97,7 +101,7 @@ export default function Hero({ profile }: HeroProps) {
           </div>
 
           {/* Фото пользователя — загружается поверх заглушки */}
-          {profile.avatar && (
+          {profile.avatar && !avatarError && (
             <Image
               src={profile.avatar}
               alt={`Аватар ${profile.name}`}
@@ -105,6 +109,7 @@ export default function Hero({ profile }: HeroProps) {
               className="object-cover"
               sizes="(max-width: 640px) 128px, 160px"
               priority
+              onError={() => setAvatarError(true)}
             />
           )}
         </motion.div>

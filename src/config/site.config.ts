@@ -11,16 +11,16 @@ export const siteConfig = {
   // ──────────────────────────────────────
   profile: {
     // Твоё имя или псевдоним (отображается крупно вверху)
-    name: "Твоё Имя",
+    name: "Ева Мэй",
 
     // Никнейм (отображается под именем)
-    nickname: "@your_nickname",
+    nickname: "@eva_mei",
 
     // Короткий слоган / подзаголовок
     tagline: "✨ just a girl with big dreams ✨",
 
     // Описание о себе (можно использовать эмодзи)
-    bio: "Привет! Добро пожаловать на мою страничку 🌸 Здесь я делюсь тем, что мне нравится — музыкой, фото и маленькими радостями жизни 💕",
+    bio: "Приветик! Добро пожаловать на мою страничку 🌸 Туть можно найти все мои ссылочки 💕",
 
     // Путь к фото аватара (положи фото в папку public/images/ и укажи имя файла)
     // Например: "/images/avatar.jpg"
@@ -28,70 +28,102 @@ export const siteConfig = {
     avatar: "/images/avatar.jpg",
 
     // Маленькие бейджи-теги под bio (можно добавить/убрать любые)
-    badges: ["🌸 Dreamer", "🎨 Creative", "🎵 Music lover", "📸 Photographer"],
+    badges: [
+      "🤖 ИИ",
+      "💻 ИТ",
+      "⛓️ Блокчейн",
+      "✈️ Путешествия",
+      "👗 Красивая одежда",
+    ],
 
     // SEO: заголовок вкладки браузера
-    siteTitle: "Твоё Имя — Personal Page",
+    siteTitle: "🌸 Ева Мэй — Персональная Страничка 🌸",
 
     // SEO: описание для поисковиков
-    siteDescription: "Персональная страничка — мои фото, музыка и ссылки",
+    siteDescription: "🌸 Персональная страничка Евы Мэй 🌸 Мои фото, музыка, видео и ссылки 💕",
   },
 
   // ──────────────────────────────────────
   // 🔗 ССЫЛКИ НА СОЦСЕТИ И ПЛАТФОРМЫ
   // ──────────────────────────────────────
-  // icon — название иконки из lucide-react (instagram, send, youtube, twitter, music, globe, heart, star, link, etc.)
+  // icon — ключ иконки: instagram | send | youtube | twitter | tiktok | reddit | pinterest | discord | vk | globe | link | ...
   // color — цвет карточки при наведении (HEX или любой CSS цвет)
   links: [
     {
-      id: "instagram",
-      label: "Instagram",
-      // Замени YOUR_USERNAME на свой ник
-      url: "https://instagram.com/YOUR_USERNAME",
-      // Иконки: instagram | send | youtube | twitter | music | globe | link | heart | star | camera | coffee
-      icon: "instagram",
-      color: "#E1306C",
-      username: "@YOUR_USERNAME",
-      // Описание под ссылкой (опционально)
-      description: "Мои фото и истории",
-    },
-    {
       id: "telegram",
       label: "Telegram",
-      url: "https://t.me/YOUR_USERNAME",
+      url: "https://t.me/eva_mei",
       icon: "send",
       color: "#2AABEE",
-      username: "@YOUR_USERNAME",
+      username: "@eva_mei",
       description: "Пиши мне",
     },
     {
-      id: "tiktok",
-      label: "TikTok",
-      url: "https://tiktok.com/@YOUR_USERNAME",
-      icon: "music",
-      color: "#000000",
-      username: "@YOUR_USERNAME",
-      description: "Мои видео",
+      id: "instagram",
+      label: "Instagram",
+      url: "https://www.instagram.com/eva.mei.love/",
+      icon: "instagram",
+      color: "#E1306C",
+      username: "@eva.mei.love",
+      description: "Фото и истории",
+    },
+    {
+      id: "reddit",
+      label: "Reddit",
+      url: "https://www.reddit.com/user/brachenlo/",
+      icon: "reddit",
+      color: "#FF4500",
+      username: "u/brachenlo",
+      description: "Посты и обсуждения",
+    },
+    {
+      id: "pinterest",
+      label: "Pinterest",
+      url: "https://www.pinterest.com/evameilove/",
+      icon: "pinterest",
+      color: "#E60023",
+      username: "@evameilove",
+      description: "Мудборды и вдохновение",
     },
     {
       id: "youtube",
       label: "YouTube",
-      url: "https://youtube.com/@YOUR_USERNAME",
+      url: "https://www.youtube.com/@EvaMeiLove",
       icon: "youtube",
       color: "#FF0000",
-      username: "@YOUR_USERNAME",
+      username: "@EvaMeiLove",
       description: "Мой канал",
     },
+    {
+      id: "discord",
+      label: "Discord",
+      // У Discord нет публичной ссылки «только по нику» — открываем клиент/веб.
+      // Если появится инвайт на сервер — замени на https://discord.gg/ТВОЙ_КОД
+      url: "https://discord.com/app",
+      icon: "discord",
+      color: "#5865F2",
+      username: "eva.mei",
+      description: "Добавь в друзья в приложении",
+    },
+    {
+      id: "twitter",
+      label: "X (Twitter)",
+      url: "https://x.com/Eva_Mei_Moon",
+      icon: "twitter",
+      color: "#000000",
+      username: "@Eva_Mei_Moon",
+      description: "Мысли и заметки",
+    },
+    {
+      id: "tiktok",
+      label: "TikTok",
+      url: "https://www.tiktok.com/@eva_mei_love",
+      icon: "tiktok",
+      color: "#000000",
+      username: "@eva_mei_love",
+      description: "Короткие видео",
+    },
     // ── Добавь новую ссылку, скопировав блок выше ──
-    // {
-    //   id: "uniqueid",
-    //   label: "Название",
-    //   url: "https://...",
-    //   icon: "globe",
-    //   color: "#розовый_цвет",
-    //   username: "@ник",
-    //   description: "Описание",
-    // },
   ],
 
   // ──────────────────────────────────────

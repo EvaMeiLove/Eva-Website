@@ -26,14 +26,14 @@ export default function Footer({ name }: FooterProps) {
 
       {/* Текст "сделано с любовью" */}
       <div className="flex items-center gap-1.5 text-xs" style={{ color: "#be185d", opacity: 0.6 }}>
-        <span>made with</span>
+        <span>сделала с</span>
         <motion.div
           animate={{ scale: [1, 1.3, 1] }}
           transition={{ duration: 1.2, repeat: Infinity }}
         >
           <Heart size={12} fill="#f472b6" style={{ color: "#f472b6" }} />
         </motion.div>
-        <span>by {name}</span>
+        <span>{name}</span>
       </div>
 
       {/* Год */}

@@ -130,7 +130,7 @@ export const siteConfig = {
       icon: "github",
       color: "#181717",
       username: "EvaMeiLove",
-      description: "Код и репозитории",
+      description: "Мои проектики",
     },
     // ── Добавь новую ссылку, скопировав блок выше ──
   ],

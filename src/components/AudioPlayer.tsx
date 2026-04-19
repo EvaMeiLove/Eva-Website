@@ -21,6 +21,8 @@ export default function AudioPlayer({ tracks }: AudioPlayerProps) {
   const [duration, setDuration] = useState(0);
   // Заглушен ли звук
   const [isMuted, setIsMuted] = useState(false);
+  // Ошибка загрузки обложки текущего трека
+  const [coverError, setCoverError] = useState(false);
 
   // Ссылка на HTML audio элемент
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -33,6 +35,7 @@ export default function AudioPlayer({ tracks }: AudioPlayerProps) {
     audio.load();
     setCurrentTime(0);
     setDuration(0);
+    setCoverError(false); // сбрасываем ошибку обложки при смене трека
 
     // Если плеер воспроизводил — автоматически запускаем новый трек
     if (isPlaying) {
@@ -171,14 +174,15 @@ export default function AudioPlayer({ tracks }: AudioPlayerProps) {
             >
               <Music size={28} style={{ color: "#f472b6" }} />
             </div>
-            {/* Обложка альбома — если задана, накрывает заглушку */}
-            {track.cover && (
+            {/* Обложка альбома — только если задана и загрузилась без ошибки */}
+            {track.cover && !coverError && (
               <Image
                 src={track.cover}
                 alt={`Обложка: ${track.title}`}
                 fill
                 className="object-cover"
                 sizes="80px"
+                onError={() => setCoverError(true)}
               />
             )}
           </motion.div>

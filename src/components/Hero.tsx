@@ -114,33 +114,6 @@ export default function Hero({ profile }: HeroProps) {
           )}
         </motion.div>
 
-        {/* Декоративные точки вокруг аватара */}
-        {[0, 72, 144, 216, 288].map((angle, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full"
-            style={{
-              background: i % 2 === 0 ? "#f472b6" : "#c084fc",
-              top: "50%",
-              left: "50%",
-              transformOrigin: "0 0",
-              transform: `rotate(${angle}deg) translateX(${
-                profile.avatar ? 76 : 72
-              }px) rotate(-${angle}deg)`,
-              marginTop: "-4px",
-              marginLeft: "-4px",
-            }}
-            animate={{
-              scale: [1, 1.4, 1],
-              opacity: [0.6, 1, 0.6],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-          />
-        ))}
       </motion.div>
 
       {/* ── Имя ── */}

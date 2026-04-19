@@ -133,25 +133,12 @@ export const siteConfig = {
   // src — путь начиная с /images/
   // Чтобы убрать галерею — сделай массив пустым: gallery: []
   gallery: [
-    {
-      id: "1",
-      src: "/images/photo1.jpg",
-      alt: "Моё фото",
-      caption: "ꕤ описание фото",
-    },
-    {
-      id: "2",
-      src: "/images/photo2.jpg",
-      alt: "Моё фото 2",
-      caption: "ꕤ описание фото",
-    },
-    {
-      id: "3",
-      src: "/images/photo3.jpg",
-      alt: "Моё фото 3",
-      caption: "ꕤ описание фото",
-    },
-    // Добавь ещё фото по такому же шаблону
+    { id: "1", src: "/images/1.jpg", alt: "Фото 1", caption: "🌸" },
+    { id: "2", src: "/images/2.jpg", alt: "Фото 2", caption: "🌸" },
+    { id: "3", src: "/images/3.jpg", alt: "Фото 3", caption: "🌸" },
+    { id: "4", src: "/images/4.jpg", alt: "Фото 4", caption: "🌸" },
+    // Добавь новые фото по тому же шаблону:
+    // { id: "5", src: "/images/5.jpg", alt: "Фото 5", caption: "🌸" },
   ],
 
   // ──────────────────────────────────────
@@ -182,6 +169,31 @@ export const siteConfig = {
   ],
 
   // ──────────────────────────────────────
+  // 🎵 МУЗЫКА С YOUTUBE MUSIC
+  // ──────────────────────────────────────
+  // Вставляй ссылки с music.youtube.com или youtube.com
+  // ID — это часть ссылки после ?v= (например: nb1qRwEe0mw)
+  // Название, артист и обложка подтягиваются автоматически!
+  // Чтобы убрать секцию — сделай массив пустым: youtubeMusicTracks: []
+  youtubeMusicTracks: [
+    {
+      id: "1",
+      // Ссылка: https://music.youtube.com/watch?v=nb1qRwEe0mw
+      youtubeId: "nb1qRwEe0mw",
+    },
+    {
+      id: "2",
+      // Ссылка: https://music.youtube.com/watch?v=8NoFd-ruKws
+      youtubeId: "8NoFd-ruKws",
+    },
+    // Добавь ещё треки по тому же шаблону:
+    // {
+    //   id: "3",
+    //   youtubeId: "ВОТ_ID_ИЗ_ССЫЛКИ",
+    // },
+  ],
+
+  // ──────────────────────────────────────
   // 🎬 ВИДЕО
   // ──────────────────────────────────────
   // Поддерживается YouTube и локальные mp4 файлы
@@ -190,19 +202,10 @@ export const siteConfig = {
     {
       id: "1",
       title: "Моё любимое видео",
-      // Тип: "youtube" или "local"
       type: "youtube" as const,
-      // Для YouTube — ID видео из ссылки (часть после ?v=)
-      // Например, в ссылке https://youtube.com/watch?v=dQw4w9WgXcQ — ID это dQw4w9WgXcQ
-      youtubeId: "dQw4w9WgXcQ",
+      // ID из ссылки https://www.youtube.com/watch?v=WiJ5uVVoGEw
+      youtubeId: "WiJ5uVVoGEw",
     },
-    // Пример локального видео (файл в папке public/video/):
-    // {
-    //   id: "2",
-    //   title: "Моё видео",
-    //   type: "local" as const,
-    //   src: "/video/myvideo.mp4",
-    // },
   ],
 
   // ──────────────────────────────────────
@@ -211,7 +214,9 @@ export const siteConfig = {
   // Показывать ли секции (true = показывать, false = скрыть)
   sections: {
     gallery: true,
-    audio: true,
+    // Локальный аудиоплеер отключён — используй YouTube Music выше
+    audio: false,
+    youtubeMusicTracks: true,
     videos: true,
   },
 };

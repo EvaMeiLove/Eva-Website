@@ -1,239 +1,209 @@
-# 🌸 Моя Персональная Страничка
+# 🌸 Ева Мэй — Персональная Страничка
 
-Милый персональный сайт в розово-пастельных тонах с анимациями, галереей, аудиоплеером и видео.
-
-**Стек:** Next.js 16 · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion
+Милый личный сайт в розово-пастельных тонах. Всё редактируется из одного файла — `src/config/site.config.ts`.
 
 ---
 
-## ✨ Что умеет сайт
+## 📦 Стек
 
-- 🎨 Анимированный градиентный фон с плавающими элементами
-- 👤 Блок с аватаром, именем, описанием и бейджами
-- 🔗 Красивые карточки ссылок на соцсети
-- 🖼️ Фотогалерея с лайтбоксом
-- 🎵 Кастомный аудиоплеер с обложками
-- 🎬 Поддержка YouTube и локальных видео
-- 📱 Адаптивный дизайн (телефон + компьютер)
-- 🌐 Готов к деплою на Netlify
+| Технология | Версия | Для чего |
+|---|---|---|
+| Next.js | 16+ | Фреймворк, SSR, роутинг |
+| React | 19 | UI компоненты |
+| TypeScript | 5 | Типобезопасность |
+| Tailwind CSS | 4 | Стили |
+| Framer Motion | — | Анимации |
 
 ---
 
-## 📁 Структура проекта
+## 🗂️ Структура проекта
 
 ```
-my-site/
-├── public/
-│   ├── images/          ← 🖼️ Сюда кладёшь фото (аватар, галерея, обложки)
-│   ├── audio/           ← 🎵 Сюда кладёшь музыку (.mp3)
-│   └── video/           ← 🎬 Сюда кладёшь видео (.mp4)
-│
-├── src/
-│   ├── config/
-│   │   └── site.config.ts   ← ⭐ ГЛАВНЫЙ ФАЙЛ — здесь меняешь всё!
-│   │
-│   ├── components/
-│   │   ├── FloatingBackground.tsx   ← декоративный анимированный фон
-│   │   ├── Hero.tsx                 ← аватар, имя, биография
-│   │   ├── SocialLinks.tsx          ← карточки ссылок
-│   │   ├── Gallery.tsx              ← фотогалерея с лайтбоксом
-│   │   ├── AudioPlayer.tsx          ← музыкальный плеер
-│   │   ├── VideoSection.tsx         ← секция видео
-│   │   └── Footer.tsx               ← подвал
-│   │
-│   └── app/
-│       ├── globals.css    ← стили, анимации
-│       ├── layout.tsx     ← основной layout с шрифтами и SEO
-│       └── page.tsx       ← главная страница
-│
-├── netlify.toml     ← настройки деплоя на Netlify
-└── package.json     ← зависимости проекта
+src/
+├── app/
+│   ├── layout.tsx          — корневой layout, SEO, шрифты, Яндекс Метрика
+│   ├── page.tsx            — главная страница
+│   ├── globals.css         — глобальные стили и анимации
+│   ├── icon.tsx            — favicon (генерируется автоматически)
+│   └── apple-icon.tsx      — иконка для iPhone (генерируется автоматически)
+├── components/
+│   ├── Hero.tsx            — аватар, имя, биография, бейджи
+│   ├── SocialLinks.tsx     — карточки со ссылками на соцсети
+│   ├── Gallery.tsx         — фотогалерея с лайтбоксом
+│   ├── YouTubeMusicSection.tsx  — загрузка метаданных треков (серверный)
+│   ├── YouTubeMusicPlayer.tsx   — плеер YouTube Music (клиентский)
+│   ├── VideoSection.tsx    — секция с видео
+│   ├── FloatingBackground.tsx  — декоративный фон
+│   └── Footer.tsx          — подвал
+├── config/
+│   └── site.config.ts      ← ВСЁ РЕДАКТИРУЕТСЯ ЗДЕСЬ
+public/
+├── images/                 — фото для галереи и аватар
+│   ├── avatar.jpg          — аватарка
+│   ├── 1.jpg               — фото галереи
+│   ├── 2.jpg
+│   └── ...
+└── google*.html            — верификация Google Search Console
 ```
 
 ---
 
-## ✏️ Как редактировать сайт
+## ✏️ Как редактировать контент
 
-### Всё, что тебе нужно — файл `src/config/site.config.ts`
+Открой **`src/config/site.config.ts`** — там всё.
 
-Открой его и меняй:
-
-| Что | Где в файле |
-|-----|-------------|
-| Имя, никнейм, описание | `profile.name`, `profile.nickname`, `profile.bio` |
-| Аватар | `profile.avatar` → положи фото в `public/images/` |
-| Бейджи | `profile.badges` |
-| Ссылки на соцсети | `links: [...]` |
-| Фото в галерею | `gallery: [...]` → файлы в `public/images/` |
-| Музыка | `audio: [...]` → файлы в `public/audio/` |
-| Видео | `videos: [...]` → YouTube ID или файлы в `public/video/` |
-| Скрыть секцию | `sections.gallery = false` |
-
-### Как добавить новую ссылку
-
-В `site.config.ts` в массиве `links` добавь новый блок:
-
-```typescript
-{
-  id: "uniqueid",       // уникальное ID (придумай сама)
-  label: "Название",    // что отобразится
-  url: "https://...",   // ссылка
-  icon: "globe",        // иконка: instagram | send | youtube | twitter | music | globe | link | heart | star | camera | coffee
-  color: "#ff6b9d",     // цвет иконки (HEX)
-  username: "@ник",     // твой ник на платформе
-  description: "Описание",
-},
+### 👤 Личная информация
+```ts
+profile: {
+  name: "Ева Мэй",
+  nickname: "@eva_mei",
+  tagline: "✨ just a girl with big dreams ✨",
+  bio: "Приветик! Добро пожаловать на мою страничку 🌸",
+  avatar: "/images/avatar.jpg",   // положи фото в public/images/
+  badges: ["🤖 ИИ", "💻 ИТ"],     // добавляй/убирай теги
+}
 ```
 
-### Как добавить фото в галерею
-
-1. Положи фото в папку `public/images/` (например `photo1.jpg`)
-2. В `site.config.ts` добавь в массив `gallery`:
-
-```typescript
-{
-  id: "1",                     // уникальное ID
-  src: "/images/photo1.jpg",   // путь к файлу
-  alt: "Моё фото",             // описание для accessibility
-  caption: "ꕤ подпись",       // подпись (опционально)
-},
+### 🔗 Ссылки на соцсети
+```ts
+links: [
+  {
+    id: "telegram",
+    label: "Telegram",
+    url: "https://t.me/твой_ник",
+    icon: "send",             // send | instagram | youtube | twitter | tiktok | reddit | pinterest | discord
+    color: "#2AABEE",
+    username: "@твой_ник",
+    description: "Пиши мне",
+  },
+  // Скопируй блок выше чтобы добавить ещё ссылку
+]
 ```
 
-### Как добавить музыку
+### 🖼️ Галерея фотографий
+1. Положи файлы в `public/images/` — например `1.jpg`, `2.jpg`, `3.jpg`
+2. Добавь в конфиг:
+```ts
+gallery: [
+  { id: "1", src: "/images/1.jpg", alt: "Фото 1", caption: "🌸" },
+  { id: "2", src: "/images/2.jpg", alt: "Фото 2", caption: "🌸" },
+]
+```
+Фото в сетке — пропорция 3:4 (портретная). Клик — полный размер в лайтбоксе.
 
-1. Положи `.mp3` файл в `public/audio/`
-2. В `site.config.ts` добавь в массив `audio`:
+### 🎵 Музыка с YouTube Music
 
-```typescript
-{
-  id: "1",
-  title: "Название песни",
-  artist: "Исполнитель",
-  src: "/audio/song.mp3",
-  cover: "/images/cover.jpg",  // обложка (опционально)
-},
+ID трека — часть ссылки после `?v=`.  
+Пример: `https://music.youtube.com/watch?v=nb1qRwEe0mw` → ID: `nb1qRwEe0mw`
+
+Название, артист и обложка подтягиваются **автоматически**.
+
+```ts
+youtubeMusicTracks: [
+  { id: "1", youtubeId: "nb1qRwEe0mw" },
+  { id: "2", youtubeId: "8NoFd-ruKws" },
+  // { id: "3", youtubeId: "ЕЩЁ_ОДИН_ID" },
+]
 ```
 
-### Как добавить YouTube видео
+В плеере есть навигация ← → между треками и плейлист внизу.
 
-Возьми ID из ссылки: `https://youtube.com/watch?v=`**`ЭТОТ_ID`**
+### 🎬 Видео
+```ts
+videos: [
+  {
+    id: "1",
+    title: "Моё любимое видео",
+    type: "youtube",
+    youtubeId: "WiJ5uVVoGEw",  // из ссылки youtube.com/watch?v=...
+  },
+]
+```
 
-```typescript
-{
-  id: "1",
-  title: "Название видео",
-  type: "youtube" as const,
-  youtubeId: "ЭТОТ_ID",  // ← вставь сюда
-},
+### 👁️ Показать / скрыть секции
+```ts
+sections: {
+  gallery: true,            // true = показывать, false = скрыть
+  audio: false,             // локальный mp3 плеер (не используется)
+  youtubeMusicTracks: true,
+  videos: true,
+}
 ```
 
 ---
 
-## 🚀 Шаг 1: Загрузить код на GitHub
+## 🖼️ Как добавить фото
 
-### Вариант A: Через GitHub Desktop (легко, рекомендую)
+1. Скопируй файл в `public/images/` (через GitHub → Add file → Upload files)
+2. Добавь в `site.config.ts` в массив `gallery`
+3. Закоммить изменения → сайт обновится автоматически
 
-1. Скачай [GitHub Desktop](https://desktop.github.com/)
-2. Войди в свой аккаунт GitHub
-3. Нажми **File → Add Local Repository**
-4. Выбери папку с проектом
-5. Нажми **Publish repository** → назови репозиторий (например `my-site`)
-6. Убери галочку "Keep this code private" если хочешь публичный сайт
-7. Нажми **Publish Repository** 🎉
+---
 
-### Вариант B: Через терминал (для тех кто знает git)
+## 🚀 Деплой и обновления
 
+### Первый запуск (уже сделано)
+Сайт подключён к Netlify через GitHub репозиторий `Eva-Website`.  
+Каждый пуш в `main` → сайт автоматически пересобирается и обновляется.
+
+### Обновить контент (текст, ссылки, треки)
+
+**Через GitHub в браузере:**
+1. Открой `src/config/site.config.ts` на GitHub
+2. Нажми карандаш ✏️ (Edit this file)
+3. Внеси изменения
+4. Нажми **Commit changes** → **Commit directly to main**
+5. Netlify сам подхватит изменение через ~1-2 минуты
+
+**Через Cursor (локально):**
 ```bash
-# В папке проекта:
-git init
+# После изменений:
 git add .
-git commit -m "🌸 Initial commit"
-
-# Создай репозиторий на github.com, потом:
-git remote add origin https://github.com/ТВО_НИК/my-site.git
-git branch -M main
-git push -u origin main
+git commit -m "обновила контент"
+git push
 ```
 
----
-
-## 🌐 Шаг 2: Подключить Netlify
-
-1. Зайди на [app.netlify.com](https://app.netlify.com/) и войди через GitHub
-2. Нажми **"Add new site"** → **"Import an existing project"**
-3. Выбери **GitHub** и найди свой репозиторий
-4. Настройки сборки (должны заполниться автоматически):
-   - **Build command:** `npm run build`
-   - **Publish directory:** `.next`
-5. Нажми **"Deploy site"** 🚀
-6. Подожди 1-2 минуты — сайт будет доступен по адресу типа `https://amazing-name-123.netlify.app`
-7. Можно сменить адрес: **Site settings → Domain management → Custom domain**
-
-### Установить плагин Netlify для Next.js
-
-Netlify нужен специальный плагин для Next.js. Зайди в:
-**Deploys → Deploy settings → Build plugins** → добавь `@netlify/plugin-nextjs`
-
-Или просто — файл `netlify.toml` уже содержит эту настройку, она применится автоматически.
+### Добавить фото через GitHub
+1. Перейди в папку `public/images/`
+2. Нажми **Add file → Upload files**
+3. Загрузи фото
+4. Commit → потом отдельно отредактируй `site.config.ts`
 
 ---
 
-## 🔄 Шаг 3: Обновлять сайт
-
-### Способ 1: Через GitHub (полностью онлайн, без компьютера)
-
-1. Зайди в свой репозиторий на [github.com](https://github.com)
-2. Найди файл `src/config/site.config.ts`
-3. Нажми иконку карандаша ✏️ (Edit this file)
-4. Внеси изменения
-5. Нажми **"Commit changes"** → **"Commit directly to the main branch"**
-6. Netlify автоматически пересоберёт сайт через 1-2 минуты ✨
-
-### Способ 2: Через GitHub Desktop (для загрузки медиафайлов)
-
-Для добавления фото/музыки/видео:
-
-1. Скопируй файлы в нужную папку (`public/images/`, `public/audio/`, `public/video/`)
-2. Открой GitHub Desktop
-3. Напиши описание изменений (например "добавила новые фото")
-4. Нажми **Commit to main** → **Push origin**
-5. Netlify автоматически обновит сайт 🎉
-
----
-
-## 💡 Полезные советы
-
-### Оптимальные размеры файлов
-
-| Что | Рекомендации |
-|-----|-------------|
-| Аватар | квадратный JPG/PNG, 400×400px, до 200KB |
-| Фото галереи | JPG, до 500KB каждое |
-| Аудио | MP3 320kbps, до 8MB |
-| Обложки аудио | квадратный JPG, 300×300px |
-| Видео | если локальное — до 50MB, лучше использовать YouTube |
-
-### Если что-то не работает
-
-- **Фото не отображается:** проверь путь в config — должен начинаться с `/images/`
-- **Музыка не играет:** браузер может блокировать автовоспроизведение — это нормально, нужно нажать кнопку
-- **Сайт не обновился:** подожди 2-3 минуты после коммита на GitHub
-
----
-
-## 🛠️ Локальная разработка (опционально)
-
-Если хочешь видеть изменения сразу без Netlify:
+## 🛠️ Локальный запуск (для разработки)
 
 ```bash
-# Установить зависимости (один раз)
+# Установить зависимости
 npm install
 
-# Запустить локально
+# Запустить dev сервер
 npm run dev
-# → Открой http://localhost:3000
+# Открой http://localhost:3000
+
+# Сборка для продакшна
+npm run build
 ```
 
 ---
 
-*Сделано с 💕 · Next.js 16 · Tailwind CSS v4 · Framer Motion*
+## 📊 Аналитика
+
+- **Google Search Console** — верификация через meta-тег в `layout.tsx` и файл `public/google*.html`
+- **Яндекс Метрика** — скрипт подключён в `layout.tsx` через `next/script`
+
+---
+
+## ❓ Частые вопросы
+
+**Сайт не обновился после пуша?**  
+Подожди 2-3 минуты или проверь вкладку Deploys на Netlify.
+
+**Фото не отображается?**  
+Убедись что файл лежит в `public/images/` и имя в конфиге совпадает с именем файла (регистр важен).
+
+**Как добавить новую соцсеть?**  
+Скопируй один из блоков в `links: [...]` и поменяй данные. Доступные иконки: `send` (Telegram), `instagram`, `youtube`, `twitter`, `tiktok`, `reddit`, `pinterest`, `discord`, `globe` (сайт), `link`.
+
+**Как скрыть секцию?**  
+В `sections: { ... }` поставь `false` для нужной секции.

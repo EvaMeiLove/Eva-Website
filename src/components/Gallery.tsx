@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ImageIcon } from "lucide-react";
 import { SiteConfig } from "@/config/site.config";
@@ -11,9 +10,8 @@ type GalleryProps = {
 };
 
 export default function Gallery({ items }: GalleryProps) {
-  // Индекс выбранного фото для лайтбокса (-1 = лайтбокс закрыт)
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
-  // Список ID фото с ошибкой загрузки — показываем красивый плейсхолдер
+  // Список ID фото с ошибкой загрузки
   const [errorIds, setErrorIds] = useState<Set<string>>(new Set());
 
   const handleImageError = (id: string) =>
@@ -21,21 +19,10 @@ export default function Gallery({ items }: GalleryProps) {
 
   if (!items.length) return null;
 
-  // Открыть лайтбокс с нужным фото
   const openLightbox = (index: number) => setSelectedIndex(index);
-
-  // Закрыть лайтбокс
   const closeLightbox = () => setSelectedIndex(-1);
-
-  // Перейти к следующему фото
-  const goNext = () =>
-    setSelectedIndex((prev) => (prev + 1) % items.length);
-
-  // Перейти к предыдущему фото
-  const goPrev = () =>
-    setSelectedIndex((prev) => (prev - 1 + items.length) % items.length);
-
-  // Закрыть лайтбокс при клике на фон
+  const goNext = () => setSelectedIndex((prev) => (prev + 1) % items.length);
+  const goPrev = () => setSelectedIndex((prev) => (prev - 1 + items.length) % items.length);
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) closeLightbox();
   };
@@ -48,7 +35,6 @@ export default function Gallery({ items }: GalleryProps) {
       transition={{ duration: 0.6 }}
       className="w-full"
     >
-      {/* Заголовок */}
       <h2
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
@@ -56,53 +42,48 @@ export default function Gallery({ items }: GalleryProps) {
         ✦ галерея ✦
       </h2>
 
-      {/* Сетка фотографий */}
-      <div
-        className="glass-card rounded-3xl p-4"
-        // Адаптивная сетка: 2 колонки на мобайле, 3 на больших экранах
-      >
+      {/* Сетка: 2 колонки на мобайле, 3 на больших экранах */}
+      <div className="glass-card rounded-3xl p-4">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {items.map((item, index) => (
             <motion.button
               key={item.id}
               onClick={() => openLightbox(index)}
-              className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer focus:outline-none focus:ring-2 focus:ring-pink-400"
+              className="relative rounded-2xl overflow-hidden group cursor-pointer focus:outline-none focus:ring-2 focus:ring-pink-400"
+              style={{ aspectRatio: "3/4" }}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              style={{ transitionDelay: `${index * 0.05}s` }}
             >
-              {/* Фото или плейсхолдер если файл не найден */}
+              {/* Розовый градиент — фон заглушки */}
+              <div
+                className="absolute inset-0"
+                style={{ background: "linear-gradient(135deg, #fce7f3 0%, #f3e5f5 100%)" }}
+              />
+
+              {/* Фото — object-contain чтобы не обрезалось */}
               {errorIds.has(item.id) ? (
-                <div
-                  className="absolute inset-0 flex flex-col items-center justify-center gap-1"
-                  style={{ background: "linear-gradient(135deg, #fce7f3, #e9d5ff)" }}
-                >
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
                   <span className="text-2xl">🌸</span>
-                  <p className="text-xs text-center px-2" style={{ color: "#be185d" }}>
-                    {item.caption ?? "фото"}
-                  </p>
                 </div>
               ) : (
-                <Image
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   src={item.src}
                   alt={item.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 640px) 45vw, 200px"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={() => handleImageError(item.id)}
                 />
               )}
 
-              {/* Оверлей при наведении — показывает подпись */}
+              {/* Тёмный оверлей + подпись при наведении */}
               <div
                 className="absolute inset-0 flex flex-col items-center justify-end p-3 opacity-0 group-hover:opacity-100 transition-all duration-300"
                 style={{
-                  background:
-                    "linear-gradient(to top, rgba(131, 24, 67, 0.8) 0%, transparent 60%)",
+                  background: "linear-gradient(to top, rgba(131,24,67,0.7) 0%, transparent 55%)",
                 }}
               >
                 {item.caption && (
@@ -112,10 +93,10 @@ export default function Gallery({ items }: GalleryProps) {
                 )}
               </div>
 
-              {/* Иконка лупы в углу */}
+              {/* Иконка лупы */}
               <div
                 className="absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200"
-                style={{ background: "rgba(255, 255, 255, 0.9)" }}
+                style={{ background: "rgba(255,255,255,0.92)" }}
               >
                 <ImageIcon size={12} style={{ color: "#f472b6" }} />
               </div>
@@ -124,108 +105,101 @@ export default function Gallery({ items }: GalleryProps) {
         </div>
       </div>
 
-      {/* ── Лайтбокс (полноэкранный просмотр) ── */}
+      {/* ── Лайтбокс ── */}
       <AnimatePresence>
         {selectedIndex >= 0 && (
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: "rgba(74, 25, 66, 0.85)", backdropFilter: "blur(12px)" }}
+            style={{ background: "rgba(74,25,66,0.88)", backdropFilter: "blur(16px)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleBackdropClick}
           >
-            {/* Карточка с фото */}
             <motion.div
-              className="relative max-w-lg w-full glass-card rounded-3xl overflow-hidden"
-              initial={{ scale: 0.85, opacity: 0 }}
+              className="relative w-full glass-card rounded-3xl overflow-hidden flex flex-col"
+              style={{ maxWidth: "min(90vw, 600px)", maxHeight: "90vh" }}
+              initial={{ scale: 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 26 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Кнопка закрытия */}
               <button
                 onClick={closeLightbox}
-                className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
                 style={{
-                  background: "rgba(255, 255, 255, 0.9)",
-                  border: "1px solid rgba(244, 114, 182, 0.3)",
+                  background: "rgba(255,255,255,0.92)",
+                  border: "1px solid rgba(244,114,182,0.3)",
                 }}
                 aria-label="Закрыть"
               >
                 <X size={16} style={{ color: "#be185d" }} />
               </button>
 
-              {/* Фото в лайтбоксе */}
-              <div className="relative aspect-square sm:aspect-[4/3] w-full">
+              {/* Фото в натуральных пропорциях */}
+              <div
+                className="flex items-center justify-center overflow-hidden"
+                style={{
+                  background: "linear-gradient(135deg, #fce7f3 0%, #f3e5f5 100%)",
+                  // Ограничиваем высоту, ширина подстраивается
+                  maxHeight: "70vh",
+                  minHeight: "200px",
+                }}
+              >
                 {errorIds.has(items[selectedIndex].id) ? (
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-center gap-2"
-                    style={{ background: "linear-gradient(135deg, #fce7f3, #e9d5ff)" }}
-                  >
+                  <div className="flex flex-col items-center justify-center p-12 gap-3">
                     <span className="text-5xl">🌸</span>
                     <p className="text-sm" style={{ color: "#be185d" }}>фото не найдено</p>
                   </div>
                 ) : (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={items[selectedIndex].src}
                     alt={items[selectedIndex].alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 90vw, 512px"
-                    priority
+                    // Показываем фото в натуральном размере, не обрезаем
+                    className="max-w-full object-contain"
+                    style={{ maxHeight: "70vh" }}
                     onError={() => handleImageError(items[selectedIndex].id)}
                   />
                 )}
               </div>
 
-              {/* Подпись и навигация */}
-              <div className="p-4 flex items-center justify-between gap-4">
-                {/* Кнопка "назад" */}
-                {items.length > 1 && (
+              {/* Навигация и подпись */}
+              <div className="px-4 py-3 flex items-center justify-between gap-3 flex-shrink-0">
+                {items.length > 1 ? (
                   <button
                     onClick={goPrev}
                     className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 flex-shrink-0"
-                    style={{
-                      background: "rgba(244, 114, 182, 0.15)",
-                      border: "1px solid rgba(244, 114, 182, 0.3)",
-                    }}
+                    style={{ background: "rgba(244,114,182,0.15)", border: "1px solid rgba(244,114,182,0.3)" }}
                     aria-label="Предыдущее фото"
                   >
                     <ChevronLeft size={18} style={{ color: "#f472b6" }} />
                   </button>
-                )}
+                ) : <div className="w-9" />}
 
-                {/* Подпись и счётчик */}
                 <div className="flex-1 text-center min-w-0">
                   {items[selectedIndex].caption && (
-                    <p
-                      className="text-sm font-medium truncate"
-                      style={{ color: "#6b2d5e" }}
-                    >
+                    <p className="text-sm font-medium" style={{ color: "#6b2d5e" }}>
                       {items[selectedIndex].caption}
                     </p>
                   )}
-                  <p className="text-xs mt-0.5" style={{ color: "#be185d", opacity: 0.6 }}>
+                  <p className="text-xs mt-0.5" style={{ color: "#be185d", opacity: 0.55 }}>
                     {selectedIndex + 1} / {items.length}
                   </p>
                 </div>
 
-                {/* Кнопка "вперёд" */}
-                {items.length > 1 && (
+                {items.length > 1 ? (
                   <button
                     onClick={goNext}
                     className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110 flex-shrink-0"
-                    style={{
-                      background: "rgba(244, 114, 182, 0.15)",
-                      border: "1px solid rgba(244, 114, 182, 0.3)",
-                    }}
+                    style={{ background: "rgba(244,114,182,0.15)", border: "1px solid rgba(244,114,182,0.3)" }}
                     aria-label="Следующее фото"
                   >
                     <ChevronRight size={18} style={{ color: "#f472b6" }} />
                   </button>
-                )}
+                ) : <div className="w-9" />}
               </div>
             </motion.div>
           </motion.div>

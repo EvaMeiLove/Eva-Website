@@ -56,7 +56,7 @@ export const siteConfig = {
       icon: "send",
       color: "#2AABEE",
       username: "@eva_mei",
-      description: "Пиши мне",
+      description: "Туть можно написать мне",
     },
     {
       id: "instagram",
@@ -65,7 +65,7 @@ export const siteConfig = {
       icon: "instagram",
       color: "#E1306C",
       username: "@eva.mei.love",
-      description: "Фото и истории",
+      description: "Фоточки и истории",
     },
     {
       id: "reddit",
@@ -74,7 +74,7 @@ export const siteConfig = {
       icon: "reddit",
       color: "#FF4500",
       username: "u/brachenlo",
-      description: "Посты и обсуждения",
+      description: "Постики и обсуждения",
     },
     {
       id: "pinterest",
@@ -83,7 +83,7 @@ export const siteConfig = {
       icon: "pinterest",
       color: "#E60023",
       username: "@evameilove",
-      description: "Мудборды и вдохновение",
+      description: "Красота и вдохновение",
     },
     {
       id: "youtube",
@@ -92,7 +92,7 @@ export const siteConfig = {
       icon: "youtube",
       color: "#FF0000",
       username: "@EvaMeiLove",
-      description: "Мой канал",
+      description: "Возможно туть будут видео",
     },
     {
       id: "discord",
@@ -103,7 +103,7 @@ export const siteConfig = {
       icon: "discord",
       color: "#5865F2",
       username: "eva.mei",
-      description: "Добавь в друзья в приложении",
+      description: "Дискордик можно найти по нику",
     },
     {
       id: "twitter",
@@ -112,7 +112,7 @@ export const siteConfig = {
       icon: "twitter",
       color: "#000000",
       username: "@Eva_Mei_Moon",
-      description: "Мысли и заметки",
+      description: "Когда-нибудь буду что-то постить",
     },
     {
       id: "tiktok",
@@ -121,7 +121,7 @@ export const siteConfig = {
       icon: "tiktok",
       color: "#000000",
       username: "@eva_mei_love",
-      description: "Короткие видео",
+      description: "Возможно туть будут видео",
     },
     // ── Добавь новую ссылку, скопировав блок выше ──
   ],

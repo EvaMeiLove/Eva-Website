@@ -9,7 +9,6 @@ import { siteConfig } from "@/config/site.config";
    next/font загружает шрифты оптимально (без мигания, кешируются)
    ────────────────────────────────────── */
 
-// Красивый шрифт с засечками для заголовков
 const playfair = Playfair_Display({
   subsets: ["latin", "cyrillic"],
   variable: "--font-playfair",
@@ -18,13 +17,16 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
-// Современный чистый шрифт для текста
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dmsans",
   display: "swap",
   weight: ["300", "400", "500", "600"],
 });
+
+// Верификация Google — только если задана в site.config.ts
+const googleVerify = siteConfig.analytics.googleSiteVerification.trim();
+const yandexId = siteConfig.analytics.yandexMetrikaId.trim();
 
 /* ──────────────────────────────────────
    МЕТАДАННЫЕ САЙТА (SEO + ВЕРИФИКАЦИЯ)
@@ -33,17 +35,18 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: siteConfig.profile.siteTitle,
   description: siteConfig.profile.siteDescription,
-  // Open Graph — красивый превью при шейринге в соцсетях
   openGraph: {
     title: siteConfig.profile.siteTitle,
     description: siteConfig.profile.siteDescription,
     type: "website",
   },
-  // ✅ Google Search Console — верификация сайта
-  // Next.js автоматически рендерит это как <meta name="google-site-verification" ...>
-  verification: {
-    google: "FC7fuX4FZXFneU9qj3FT_ajWF4_WKJuAQNY99HIXe2M",
-  },
+  ...(googleVerify
+    ? {
+        verification: {
+          google: googleVerify,
+        },
+      }
+    : {}),
 };
 
 /* ──────────────────────────────────────
@@ -57,21 +60,19 @@ export default function RootLayout({
   return (
     <html
       lang="ru"
-      // CSS-переменные шрифтов доступны во всех компонентах
       className={`${playfair.variable} ${dmSans.variable}`}
     >
       <body className="min-h-screen antialiased">
         {children}
 
-        {/* ── Яндекс.Метрика ──────────────────────────────────────
-            strategy="afterInteractive" — скрипт загружается после
-            интерактивности страницы, не блокирует рендер
-            ────────────────────────────────────────────────────── */}
-        <Script
-          id="yandex-metrika"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+        {/* Яндекс.Метрика — только если в site.config указан номер счётчика */}
+        {yandexId ? (
+          <>
+            <Script
+              id="yandex-metrika"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
               (function(m,e,t,r,i,k,a){
                 m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                 m[i].l=1*new Date();
@@ -80,9 +81,9 @@ export default function RootLayout({
                 }
                 k=e.createElement(t),a=e.getElementsByTagName(t)[0],
                 k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-              })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108664576','ym');
+              })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=${yandexId}','ym');
 
-              ym(108664576, 'init', {
+              ym(${yandexId}, 'init', {
                 ssr: true,
                 webvisor: true,
                 clickmap: true,
@@ -93,19 +94,19 @@ export default function RootLayout({
                 trackLinks: true
               });
             `,
-          }}
-        />
-
-        {/* Яндекс.Метрика — для пользователей без JavaScript */}
-        <noscript>
-          <div>
-            <img
-              src="https://mc.yandex.ru/watch/108664576"
-              style={{ position: "absolute", left: "-9999px" }}
-              alt=""
+              }}
             />
-          </div>
-        </noscript>
+            <noscript>
+              <div>
+                <img
+                  src={`https://mc.yandex.ru/watch/${yandexId}`}
+                  style={{ position: "absolute", left: "-9999px" }}
+                  alt=""
+                />
+              </div>
+            </noscript>
+          </>
+        ) : null}
       </body>
     </html>
   );

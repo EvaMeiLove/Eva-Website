@@ -4,22 +4,20 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ImageIcon } from "lucide-react";
 import { SiteConfig } from "@/config/site.config";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
 
 type GalleryProps = {
   items: SiteConfig["gallery"];
 };
 
-// Форматирование количества фото на русском
-function photoCount(n: number) {
-  if (n === 1) return "1 фото";
-  if (n >= 2 && n <= 4) return `${n} фото`;
-  return `${n} фото`;
-}
 
 export default function Gallery({ items }: GalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [errorIds, setErrorIds] = useState<Set<string>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const handleImageError = (id: string) =>
     setErrorIds((prev) => new Set([...prev, id]));
@@ -58,7 +56,7 @@ export default function Gallery({ items }: GalleryProps) {
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
       >
-        ✦ галерея ✦
+        {t.sections.gallery}
       </h2>
 
       <div className="glass-card rounded-3xl p-4">
@@ -74,7 +72,7 @@ export default function Gallery({ items }: GalleryProps) {
               border: "1px solid rgba(244,114,182,0.3)",
               boxShadow: "0 2px 12px rgba(244,114,182,0.2)",
             }}
-            aria-label="Предыдущее фото"
+            aria-label={t.gallery.prevPhoto}
           >
             <ChevronLeft size={15} style={{ color: "#f472b6" }} />
           </button>
@@ -88,7 +86,7 @@ export default function Gallery({ items }: GalleryProps) {
               border: "1px solid rgba(244,114,182,0.3)",
               boxShadow: "0 2px 12px rgba(244,114,182,0.2)",
             }}
-            aria-label="Следующее фото"
+            aria-label={t.gallery.nextPhoto}
           >
             <ChevronRight size={15} style={{ color: "#f472b6" }} />
           </button>
@@ -173,7 +171,7 @@ export default function Gallery({ items }: GalleryProps) {
           className="text-center text-xs mt-3"
           style={{ color: "#c084fc", opacity: 0.65 }}
         >
-          {photoCount(items.length)} &nbsp;·&nbsp; листай →
+          {t.gallery.photoCount(items.length)} &nbsp;·&nbsp; {t.gallery.swipe}
         </p>
       </div>
 
@@ -208,7 +206,7 @@ export default function Gallery({ items }: GalleryProps) {
                   background: "rgba(255,255,255,0.92)",
                   border: "1px solid rgba(244,114,182,0.3)",
                 }}
-                aria-label="Закрыть"
+                aria-label={t.gallery.close}
               >
                 <X size={16} style={{ color: "#be185d" }} />
               </button>
@@ -227,7 +225,7 @@ export default function Gallery({ items }: GalleryProps) {
                   <div className="flex flex-col items-center justify-center p-12 gap-3">
                     <span className="text-5xl">🌸</span>
                     <p className="text-sm" style={{ color: "#be185d" }}>
-                      фото не найдено
+                      {t.gallery.photoNotFound}
                     </p>
                   </div>
                 ) : (
@@ -254,7 +252,7 @@ export default function Gallery({ items }: GalleryProps) {
                       background: "rgba(244,114,182,0.15)",
                       border: "1px solid rgba(244,114,182,0.3)",
                     }}
-                    aria-label="Предыдущее фото"
+                    aria-label={t.gallery.prevPhoto}
                   >
                     <ChevronLeft size={18} style={{ color: "#f472b6" }} />
                   </button>
@@ -284,7 +282,7 @@ export default function Gallery({ items }: GalleryProps) {
                       background: "rgba(244,114,182,0.15)",
                       border: "1px solid rgba(244,114,182,0.3)",
                     }}
-                    aria-label="Следующее фото"
+                    aria-label={t.gallery.nextPhoto}
                   >
                     <ChevronRight size={18} style={{ color: "#f472b6" }} />
                   </button>

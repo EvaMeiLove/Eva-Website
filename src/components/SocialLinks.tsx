@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import type { FC, SVGProps } from "react";
 import { SiteConfig } from "@/config/site.config";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
 
 type SocialLinksProps = {
   links: SiteConfig["links"];
@@ -178,6 +180,9 @@ const cardVariants = {
 };
 
 export default function SocialLinks({ links }: SocialLinksProps) {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   if (!links.length) return null;
 
   return (
@@ -194,7 +199,7 @@ export default function SocialLinks({ links }: SocialLinksProps) {
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
       >
-        ✦ найти меня ✦
+        {t.sections.findMe}
       </motion.h2>
 
       {/* Сетка ссылок — 1 колонка на мобайле, 2 на планшете */}
@@ -244,9 +249,9 @@ export default function SocialLinks({ links }: SocialLinksProps) {
                     {link.username}
                   </p>
                 )}
-                {link.description && (
+                {(t.links[link.id] ?? link.description) && (
                   <p className="text-xs mt-0.5 truncate" style={{ color: "#9d174d", opacity: 0.6 }}>
-                    {link.description}
+                    {t.links[link.id] ?? link.description}
                   </p>
                 )}
               </div>

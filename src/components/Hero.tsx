@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { SiteConfig } from "@/config/site.config";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
 
 // Тип принимаемых пропсов
 type HeroProps = {
@@ -53,8 +55,9 @@ const avatarVariants = {
 };
 
 export default function Hero({ profile }: HeroProps) {
-  // Ошибка загрузки аватара — показываем заглушку
   const [avatarError, setAvatarError] = useState(false);
+  const { language } = useLanguage();
+  const t = translations[language].profile;
 
   return (
     <motion.section
@@ -122,7 +125,7 @@ export default function Hero({ profile }: HeroProps) {
           className="text-4xl sm:text-5xl font-bold leading-tight text-gradient-rose"
           style={{ fontFamily: "var(--font-playfair), 'Playfair Display', serif" }}
         >
-          {profile.name}
+          {t.name}
         </h1>
 
         {/* Никнейм */}
@@ -140,7 +143,7 @@ export default function Hero({ profile }: HeroProps) {
         className="text-base sm:text-lg font-light italic"
         style={{ color: "#be185d", fontFamily: "var(--font-playfair), serif" }}
       >
-        {profile.tagline}
+        {t.tagline}
       </motion.p>
 
       {/* ── Биография ── */}
@@ -152,17 +155,17 @@ export default function Hero({ profile }: HeroProps) {
           className="text-sm sm:text-base leading-relaxed"
           style={{ color: "#6b2d5e" }}
         >
-          {profile.bio}
+          {t.bio}
         </p>
       </motion.div>
 
       {/* ── Бейджи ── */}
-      {profile.badges.length > 0 && (
+      {t.badges.length > 0 && (
         <motion.div
           variants={itemVariants}
           className="flex flex-wrap justify-center gap-2"
         >
-          {profile.badges.map((badge, index) => (
+          {t.badges.map((badge, index) => (
             <motion.span
               key={index}
               className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium cursor-default"

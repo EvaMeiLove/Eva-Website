@@ -3,6 +3,8 @@ import { Playfair_Display, DM_Sans } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { siteConfig } from "@/config/site.config";
+import { LanguageProvider } from "@/context/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 /* ──────────────────────────────────────
    ПОДКЛЮЧЕНИЕ GOOGLE FONTS
@@ -63,16 +65,18 @@ export default function RootLayout({
       className={`${playfair.variable} ${dmSans.variable}`}
     >
       <body className="min-h-screen antialiased">
-        {children}
+        <LanguageProvider>
+          <LanguageSwitcher />
+          {children}
 
-        {/* Яндекс.Метрика — только если в site.config указан номер счётчика */}
-        {yandexId ? (
-          <>
-            <Script
-              id="yandex-metrika"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `
+          {/* Яндекс.Метрика — только если в site.config указан номер счётчика */}
+          {yandexId ? (
+            <>
+              <Script
+                id="yandex-metrika"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                  __html: `
               (function(m,e,t,r,i,k,a){
                 m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                 m[i].l=1*new Date();
@@ -94,19 +98,20 @@ export default function RootLayout({
                 trackLinks: true
               });
             `,
-              }}
-            />
-            <noscript>
-              <div>
-                <img
-                  src={`https://mc.yandex.ru/watch/${yandexId}`}
-                  style={{ position: "absolute", left: "-9999px" }}
-                  alt=""
-                />
-              </div>
-            </noscript>
-          </>
-        ) : null}
+                }}
+              />
+              <noscript>
+                <div>
+                  <img
+                    src={`https://mc.yandex.ru/watch/${yandexId}`}
+                    style={{ position: "absolute", left: "-9999px" }}
+                    alt=""
+                  />
+                </div>
+              </noscript>
+            </>
+          ) : null}
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -4,18 +4,19 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X, Music2, ChevronLeft, ChevronRight } from "lucide-react";
 import type { TrackWithMeta } from "./YouTubeMusicSection";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
 
 interface YouTubeMusicPlayerProps {
   tracks: TrackWithMeta[];
 }
 
 export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) {
-  // Текущий трек
   const [currentIndex, setCurrentIndex] = useState(0);
-  // Открыт ли встроенный плеер
   const [isOpen, setIsOpen] = useState(false);
-  // ID треков с ошибкой загрузки обложки
   const [coverErrors, setCoverErrors] = useState<Set<string>>(new Set());
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const track = tracks[currentIndex];
 
@@ -44,7 +45,7 @@ export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) 
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
       >
-        ✦ музыка ✦
+        {t.sections.music}
       </h2>
 
       <div className="glass-card rounded-3xl overflow-hidden">
@@ -59,7 +60,7 @@ export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) 
             style={{ border: "2px solid rgba(244, 114, 182, 0.3)" }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            aria-label={isOpen ? "Закрыть плеер" : "Слушать"}
+            aria-label={isOpen ? t.music.close : t.music.openOnYouTube}
           >
             {/* Розовый фон-заглушка */}
             <div
@@ -127,7 +128,7 @@ export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) 
                 disabled={tracks.length <= 1}
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 disabled:opacity-30"
                 style={{ background: "rgba(244,114,182,0.12)", border: "1px solid rgba(244,114,182,0.25)" }}
-                aria-label="Предыдущий трек"
+                aria-label={t.music.prevTrack}
               >
                 <ChevronLeft size={15} style={{ color: "#f472b6" }} />
               </button>
@@ -145,7 +146,7 @@ export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) 
                 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                aria-label={isOpen ? "Закрыть" : "Слушать"}
+                aria-label={isOpen ? t.music.close : t.music.openOnYouTube}
               >
                 {isOpen ? (
                   <X size={15} style={{ color: "#f472b6" }} />
@@ -159,7 +160,7 @@ export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) 
                 disabled={tracks.length <= 1}
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 disabled:opacity-30"
                 style={{ background: "rgba(244,114,182,0.12)", border: "1px solid rgba(244,114,182,0.25)" }}
-                aria-label="Следующий трек"
+                aria-label={t.music.nextTrack}
               >
                 <ChevronRight size={15} style={{ color: "#f472b6" }} />
               </button>

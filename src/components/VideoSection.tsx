@@ -4,6 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { VideoItem } from "@/config/site.config";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
 
 type VideoSectionProps = {
   videos: VideoItem[];
@@ -11,6 +13,8 @@ type VideoSectionProps = {
 
 export default function VideoSection({ videos }: VideoSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   if (!videos.length) return null;
 
@@ -33,7 +37,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
       >
-        ✦ видео ✦
+        {t.sections.video}
       </h2>
 
       <div className="glass-card rounded-3xl overflow-hidden">
@@ -64,7 +68,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
             >
-              {video.title}
+              {t.videoTitles[video.id] ?? video.title}
             </motion.p>
           </AnimatePresence>
 
@@ -78,7 +82,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
                   background: "rgba(244,114,182,0.12)",
                   border: "1px solid rgba(244,114,182,0.25)",
                 }}
-                aria-label="Предыдущее видео"
+                aria-label={t.video.prevVideo}
               >
                 <ChevronLeft size={13} style={{ color: "#f472b6" }} />
               </button>
@@ -94,7 +98,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
                   background: "rgba(244,114,182,0.12)",
                   border: "1px solid rgba(244,114,182,0.25)",
                 }}
-                aria-label="Следующее видео"
+                aria-label={t.video.nextVideo}
               >
                 <ChevronRight size={13} style={{ color: "#f472b6" }} />
               </button>
@@ -132,7 +136,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
                 className="absolute inset-0 w-full h-full object-cover"
                 style={{ accentColor: "#f472b6" }}
               >
-                <p>Твой браузер не поддерживает видео.</p>
+                <p>{t.video.browserNotSupported}</p>
               </video>
             ) : (
               <div
@@ -141,7 +145,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
               >
                 <span className="text-4xl">🎬</span>
                 <p className="text-sm" style={{ color: "#be185d" }}>
-                  Видео не найдено
+                  {t.video.notFound}
                 </p>
               </div>
             )}
@@ -204,7 +208,7 @@ export default function VideoSection({ videos }: VideoSectionProps) {
                   className="text-xs font-medium truncate"
                   style={{ color: i === currentIndex ? "#ec4899" : "#4a1942" }}
                 >
-                  {v.title}
+                  {t.videoTitles[v.id] ?? v.title}
                 </p>
               </button>
             ))}

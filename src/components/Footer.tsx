@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
 
 type FooterProps = {
   name: string;
@@ -9,6 +11,10 @@ type FooterProps = {
 
 export default function Footer({ name }: FooterProps) {
   const year = new Date().getFullYear();
+  const { language } = useLanguage();
+  const t = translations[language].footer;
+  // Имя в подвале берём из переводов, prop `name` используется как fallback
+  const displayName = translations[language].profile.name ?? name;
 
   return (
     <motion.footer
@@ -26,14 +32,14 @@ export default function Footer({ name }: FooterProps) {
 
       {/* Текст "сделано с любовью" */}
       <div className="flex items-center gap-1.5 text-xs" style={{ color: "#be185d", opacity: 0.6 }}>
-        <span>сделала с</span>
+        <span>{t.madeWith}</span>
         <motion.div
           animate={{ scale: [1, 1.3, 1] }}
           transition={{ duration: 1.2, repeat: Infinity }}
         >
           <Heart size={12} fill="#f472b6" style={{ color: "#f472b6" }} />
         </motion.div>
-        <span>{name}</span>
+        <span>{displayName}</span>
       </div>
 
       {/* Год */}

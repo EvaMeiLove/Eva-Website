@@ -46,7 +46,7 @@ export const siteConfig = {
   // ──────────────────────────────────────
   // 🔗 ССЫЛКИ НА СОЦСЕТИ И ПЛАТФОРМЫ
   // ──────────────────────────────────────
-  // icon — ключ иконки: instagram | send | youtube | twitter | tiktok | reddit | pinterest | discord | vk | globe | link | ...
+  // icon — ключ иконки: instagram | send | youtube | twitter | tiktok | reddit | pinterest | discord | github | vk | globe | link | ...
   // color — цвет карточки при наведении (HEX или любой CSS цвет)
   links: [
     {
@@ -122,6 +122,15 @@ export const siteConfig = {
       color: "#000000",
       username: "@eva_mei_love",
       description: "Возможно туть будут видео",
+    },
+    {
+      id: "github",
+      label: "GitHub",
+      url: "https://github.com/EvaMeiLove",
+      icon: "github",
+      color: "#181717",
+      username: "EvaMeiLove",
+      description: "Код и репозитории",
     },
     // ── Добавь новую ссылку, скопировав блок выше ──
   ],

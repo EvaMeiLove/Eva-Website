@@ -103,7 +103,7 @@ netlify.toml              — команда сборки и Node для Netlify
 
 Каждый элемент: `id`, `label`, `url`, `icon`, `color`, `username`, `description`.
 
-Иконки: `send` (Telegram), `instagram`, `youtube`, `twitter`, `tiktok`, `reddit`, `pinterest`, `discord`, `vk`, `globe`, `link`.
+Иконки: `send` (Telegram), `instagram`, `youtube`, `twitter`, `tiktok`, `reddit`, `pinterest`, `discord`, `github`, `vk`, `globe`, `link`.
 
 ### Галерея (`gallery`)
 

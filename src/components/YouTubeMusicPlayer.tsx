@@ -202,8 +202,13 @@ export default function YouTubeMusicPlayer({ tracks }: YouTubeMusicPlayerProps) 
         {/* ── Плейлист (если больше одного трека) ── */}
         {tracks.length > 1 && (
           <div
-            className="px-4 pb-4 pt-3 flex flex-col gap-1.5"
-            style={{ borderTop: "1px solid rgba(244,114,182,0.1)" }}
+            className="px-4 pb-4 pt-3 flex flex-col gap-1.5 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+            style={{
+              borderTop: "1px solid rgba(244,114,182,0.1)",
+              // Максимум ~4 трека видны, остальные прокручиваются
+              maxHeight: "212px",
+              scrollbarWidth: "none",
+            }}
           >
             {tracks.map((t, i) => (
               <button

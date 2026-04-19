@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { VideoItem } from "@/config/site.config";
 
 type VideoSectionProps = {
@@ -9,7 +10,16 @@ type VideoSectionProps = {
 };
 
 export default function VideoSection({ videos }: VideoSectionProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   if (!videos.length) return null;
+
+  const video = videos[currentIndex];
+
+  // При смене видео — iframe перестраивается (останавливает воспроизведение)
+  const goTo = (index: number) => setCurrentIndex(index);
+  const goPrev = () => goTo((currentIndex - 1 + videos.length) % videos.length);
+  const goNext = () => goTo((currentIndex + 1) % videos.length);
 
   return (
     <motion.section
@@ -19,86 +29,187 @@ export default function VideoSection({ videos }: VideoSectionProps) {
       transition={{ duration: 0.6 }}
       className="w-full"
     >
-      {/* Заголовок секции */}
       <h2
         className="text-center text-sm font-semibold uppercase tracking-widest mb-4"
         style={{ color: "#c084fc", letterSpacing: "0.2em" }}
       >
-        ✦ видео ✦
+        ✦ мои любимые видео ✦
       </h2>
 
-      {/* Список видео */}
-      <div className="flex flex-col gap-4">
-        {videos.map((video, index) => (
-          <motion.div
-            key={video.id}
-            className="glass-card rounded-3xl overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-          >
-            {/* Название видео */}
-            <div className="px-5 py-3 flex items-center gap-2" style={{ borderBottom: "1px solid rgba(244, 114, 182, 0.15)" }}>
-              <motion.div
-                className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #f472b6, #c084fc)" }}
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <Play size={12} fill="white" style={{ color: "white", marginLeft: "1px" }} />
-              </motion.div>
-              <p
-                className="font-medium text-sm truncate"
-                style={{ color: "#4a1942" }}
-              >
-                {video.title}
-              </p>
-            </div>
+      <div className="glass-card rounded-3xl overflow-hidden">
 
-            {/* Видео контент */}
-            <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
-              {video.type === "youtube" && video.youtubeId ? (
-                // YouTube embed
-                // privacy-enhanced — не отслеживает пользователей без согласия
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1&color=white`}
-                  title={video.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full"
-                  style={{ border: "none" }}
-                />
-              ) : video.type === "local" && video.src ? (
-                // Локальный видео файл
-                <video
-                  src={video.src}
-                  controls
-                  preload="metadata"
-                  className="absolute inset-0 w-full h-full object-cover"
+        {/* ── Шапка: иконка + название + навигация ── */}
+        <div
+          className="px-5 py-3 flex items-center gap-3"
+          style={{ borderBottom: "1px solid rgba(244,114,182,0.15)" }}
+        >
+          {/* Иконка Play */}
+          <motion.div
+            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ background: "linear-gradient(135deg, #f472b6, #c084fc)" }}
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <Play size={12} fill="white" style={{ color: "white", marginLeft: "1px" }} />
+          </motion.div>
+
+          {/* Название текущего видео — анимируется при смене */}
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={currentIndex}
+              className="flex-1 font-medium text-sm truncate"
+              style={{ color: "#4a1942" }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+            >
+              {video.title}
+            </motion.p>
+          </AnimatePresence>
+
+          {/* Навигация (только если видео больше одного) */}
+          {videos.length > 1 && (
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <button
+                onClick={goPrev}
+                className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  background: "rgba(244,114,182,0.12)",
+                  border: "1px solid rgba(244,114,182,0.25)",
+                }}
+                aria-label="Предыдущее видео"
+              >
+                <ChevronLeft size={13} style={{ color: "#f472b6" }} />
+              </button>
+
+              <span className="text-xs" style={{ color: "#c084fc", minWidth: "30px", textAlign: "center" }}>
+                {currentIndex + 1}/{videos.length}
+              </span>
+
+              <button
+                onClick={goNext}
+                className="w-7 h-7 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  background: "rgba(244,114,182,0.12)",
+                  border: "1px solid rgba(244,114,182,0.25)",
+                }}
+                aria-label="Следующее видео"
+              >
+                <ChevronRight size={13} style={{ color: "#f472b6" }} />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* ── Видео ── */}
+        {/* AnimatePresence: плавная смена при переключении */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            className="relative w-full"
+            style={{ aspectRatio: "16/9" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            {video.type === "youtube" && video.youtubeId ? (
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1&color=white`}
+                title={video.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+                className="absolute inset-0 w-full h-full"
+                style={{ border: "none" }}
+              />
+            ) : video.type === "local" && video.src ? (
+              <video
+                src={video.src}
+                controls
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ accentColor: "#f472b6" }}
+              >
+                <p>Твой браузер не поддерживает видео.</p>
+              </video>
+            ) : (
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center gap-2"
+                style={{ background: "linear-gradient(135deg, #fce7f3, #e9d5ff)" }}
+              >
+                <span className="text-4xl">🎬</span>
+                <p className="text-sm" style={{ color: "#be185d" }}>
+                  Видео не найдено
+                </p>
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* ── Плейлист (если видео больше одного) ── */}
+        {videos.length > 1 && (
+          <div
+            className="px-4 pb-4 pt-3 flex flex-col gap-1.5 overflow-y-auto [&::-webkit-scrollbar]:hidden"
+            style={{
+              borderTop: "1px solid rgba(244,114,182,0.1)",
+              maxHeight: "200px",
+              scrollbarWidth: "none",
+            }}
+          >
+            {videos.map((v, i) => (
+              <button
+                key={v.id}
+                onClick={() => goTo(i)}
+                className="flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all hover:scale-[1.01]"
+                style={{
+                  background: i === currentIndex
+                    ? "rgba(244,114,182,0.14)"
+                    : "transparent",
+                  border: i === currentIndex
+                    ? "1px solid rgba(244,114,182,0.28)"
+                    : "1px solid transparent",
+                }}
+              >
+                {/* Номер */}
+                <span
+                  className="text-xs font-medium w-5 text-center flex-shrink-0"
+                  style={{ color: i === currentIndex ? "#ec4899" : "#c084fc" }}
+                >
+                  {i + 1}
+                </span>
+
+                {/* Иконка */}
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                   style={{
-                    // Кастомизация контролов (работает не во всех браузерах)
-                    accentColor: "#f472b6",
+                    background: i === currentIndex
+                      ? "linear-gradient(135deg, #f472b6, #c084fc)"
+                      : "rgba(244,114,182,0.12)",
                   }}
                 >
-                  <p>Твой браузер не поддерживает видео.</p>
-                </video>
-              ) : (
-                // Заглушка если видео не настроено
-                <div
-                  className="absolute inset-0 flex flex-col items-center justify-center gap-2"
-                  style={{ background: "linear-gradient(135deg, #fce7f3, #e9d5ff)" }}
-                >
-                  <span className="text-4xl">🎬</span>
-                  <p className="text-sm" style={{ color: "#be185d" }}>
-                    Видео не найдено
-                  </p>
+                  <Play
+                    size={10}
+                    fill={i === currentIndex ? "white" : "#f472b6"}
+                    style={{
+                      color: i === currentIndex ? "white" : "#f472b6",
+                      marginLeft: "1px",
+                    }}
+                  />
                 </div>
-              )}
-            </div>
-          </motion.div>
-        ))}
+
+                {/* Название */}
+                <p
+                  className="text-xs font-medium truncate"
+                  style={{ color: i === currentIndex ? "#ec4899" : "#4a1942" }}
+                >
+                  {v.title}
+                </p>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </motion.section>
   );

@@ -206,6 +206,20 @@ export const siteConfig = {
       // ID из ссылки https://www.youtube.com/watch?v=WiJ5uVVoGEw
       youtubeId: "WiJ5uVVoGEw",
     },
+    {
+      id: "2",
+      title: "Ещё одно любимое",
+      type: "youtube" as const,
+      // https://www.youtube.com/watch?v=h6fcK_fRYaI
+      youtubeId: "h6fcK_fRYaI",
+    },
+    // Добавь ещё видео по тому же шаблону:
+    // {
+    //   id: "3",
+    //   title: "Название",
+    //   type: "youtube" as const,
+    //   youtubeId: "ID_ИЗ_ССЫЛКИ",
+    // },
   ],
 
   // ──────────────────────────────────────

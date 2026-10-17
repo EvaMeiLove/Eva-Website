@@ -183,7 +183,10 @@ export default function SocialLinks({ links }: SocialLinksProps) {
   const { language } = useLanguage();
   const t = translations[language];
 
-  if (!links.length) return null;
+  // Пустой url = ссылка отключена (карточка скрыта, настройки в site.config сохраняются)
+  const visibleLinks = links.filter((link) => link.url.trim().length > 0);
+
+  if (!visibleLinks.length) return null;
 
   return (
     <motion.section
@@ -204,7 +207,7 @@ export default function SocialLinks({ links }: SocialLinksProps) {
 
       {/* Сетка ссылок — 1 колонка на мобайле, 2 на планшете */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {links.map((link) => {
+        {visibleLinks.map((link) => {
           const IconComponent = iconMap[link.icon] ?? (Globe as unknown as IconComponent);
 
           return (

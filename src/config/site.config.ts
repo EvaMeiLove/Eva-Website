@@ -48,6 +48,7 @@ export const siteConfig = {
   // ──────────────────────────────────────
   // icon — ключ иконки: instagram | send | youtube | twitter | tiktok | reddit | pinterest | discord | github | vk | globe | link | ...
   // color — цвет карточки при наведении (HEX или любой CSS цвет)
+  // url: "" — скрыть карточку, но оставить блок настроек (иконка/цвет/тексты)
   links: [
     {
       id: "telegram",
@@ -106,12 +107,14 @@ export const siteConfig = {
       description: "Дискордик можно найти по нику",
     },
     {
+      // Карточка скрыта, пока url пустой. Чтобы вернуть X/Twitter —
+      // заполни только url и username (дизайн и иконка уже готовы).
       id: "twitter",
       label: "X (Twitter)",
-      url: "https://x.com/Eva_Mei_Moon",
+      url: "",
       icon: "twitter",
       color: "#c084fc",
-      username: "@Eva_Mei_Moon",
+      username: "",
       description: "Когда-нибудь буду что-то постить",
     },
     {

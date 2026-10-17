@@ -103,6 +103,8 @@ netlify.toml              — команда сборки и Node для Netlify
 
 Каждый элемент: `id`, `label`, `url`, `icon`, `color`, `username`, `description`.
 
+Пустой `url: ""` — карточка не показывается, но блок в конфиге остаётся (удобно временно отключить сеть и потом вернуть, заполнив только `url` и `username`).
+
 Иконки: `send` (Telegram), `instagram`, `youtube`, `twitter`, `tiktok`, `reddit`, `pinterest`, `discord`, `github`, `vk`, `globe`, `link`.
 
 ### Галерея (`gallery`)

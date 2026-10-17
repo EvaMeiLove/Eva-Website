@@ -86,35 +86,45 @@ export default function Hero({ profile }: HeroProps) {
         {/* Белый разделитель */}
         <div className="absolute inset-[-3px] rounded-full bg-white/80" />
 
-        {/* Контейнер аватара с пульсирующим свечением */}
+        {/* Hover-scale снаружи: transform на том же узле, что и overflow+radius,
+            после скролла ломает круглую обрезку в Chrome/Safari */}
         <motion.div
-          className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden"
-          style={{ animation: "pulseGlow 3s ease-in-out infinite" }}
+          className="relative"
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          {/* Фон-заглушка — всегда отображается, фото накрывает его сверху */}
+          {/* Клиппинг без motion-transform — clip-path надёжнее border-radius */}
           <div
-            className="absolute inset-0 flex items-center justify-center text-5xl"
+            className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, #fce7f3 0%, #e9d5ff 100%)",
+              animation: "pulseGlow 3s ease-in-out infinite",
+              clipPath: "circle(50%)",
+              WebkitClipPath: "circle(50%)",
             }}
           >
-            🌸
-          </div>
+            {/* Фон-заглушка — всегда отображается, фото накрывает его сверху */}
+            <div
+              className="absolute inset-0 flex items-center justify-center text-5xl"
+              style={{
+                background: "linear-gradient(135deg, #fce7f3 0%, #e9d5ff 100%)",
+              }}
+            >
+              🌸
+            </div>
 
-          {/* Фото пользователя — загружается поверх заглушки */}
-          {profile.avatar && !avatarError && (
-            <Image
-              src={profile.avatar}
-              alt={`Аватар ${profile.name}`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 128px, 160px"
-              priority
-              onError={() => setAvatarError(true)}
-            />
-          )}
+            {/* Фото пользователя — загружается поверх заглушки */}
+            {profile.avatar && !avatarError && (
+              <Image
+                src={profile.avatar}
+                alt={`Аватар ${profile.name}`}
+                fill
+                className="object-cover rounded-full"
+                sizes="(max-width: 640px) 128px, 160px"
+                priority
+                onError={() => setAvatarError(true)}
+              />
+            )}
+          </div>
         </motion.div>
 
       </motion.div>

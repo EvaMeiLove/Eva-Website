@@ -42,11 +42,11 @@ const itemVariants = {
   },
 };
 
+// Только opacity: scale на родителе ломает rounded-full у колец после скролла
 const avatarVariants = {
-  hidden: { opacity: 0, scale: 0.7 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    scale: 1,
     transition: {
       duration: 0.8,
       ease: springEase,
@@ -67,66 +67,78 @@ export default function Hero({ profile }: HeroProps) {
       animate="visible"
     >
       {/* ── Аватар с анимацией свечения ── */}
-      <motion.div
-        className="relative"
-        variants={avatarVariants}
-      >
-        {/* Внешнее кольцо с вращением */}
-        <motion.div
-          className="absolute inset-[-8px] rounded-full"
+      <motion.div className="relative" variants={avatarVariants}>
+        {/* Градиентное кольцо: клип снаружи (без transform), вращение внутри —
+            иначе после скролла виден квадрат вместо круга */}
+        <div
+          className="absolute inset-[-8px] rounded-full overflow-hidden pointer-events-none"
           style={{
-            background:
-              "conic-gradient(from 0deg, #f472b6, #c084fc, #f9a8d4, #e9d5ff, #f472b6)",
-            opacity: 0.7,
+            clipPath: "circle(50%)",
+            WebkitClipPath: "circle(50%)",
           }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
+        >
+          <div
+            className="h-full w-full"
+            style={{
+              background:
+                "conic-gradient(from 0deg, #f472b6, #c084fc, #f9a8d4, #e9d5ff, #f472b6)",
+              opacity: 0.7,
+              animation: "avatarRingSpin 8s linear infinite",
+            }}
+          />
+        </div>
 
         {/* Белый разделитель */}
-        <div className="absolute inset-[-3px] rounded-full bg-white/80" />
+        <div
+          className="absolute inset-[-3px] rounded-full overflow-hidden bg-white/80 pointer-events-none"
+          style={{
+            clipPath: "circle(50%)",
+            WebkitClipPath: "circle(50%)",
+          }}
+        />
 
-        {/* Hover-scale снаружи: transform на том же узле, что и overflow+radius,
-            после скролла ломает круглую обрезку в Chrome/Safari */}
-        <motion.div
+        {/* Свечение снаружи клиппинга, чтобы тень не обрезалась */}
+        <div
           className="relative"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          style={{ animation: "pulseGlow 3s ease-in-out infinite" }}
         >
-          {/* Клиппинг без motion-transform — clip-path надёжнее border-radius */}
-          <div
-            className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden"
-            style={{
-              animation: "pulseGlow 3s ease-in-out infinite",
-              clipPath: "circle(50%)",
-              WebkitClipPath: "circle(50%)",
-            }}
+          <motion.div
+            className="relative"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            {/* Фон-заглушка — всегда отображается, фото накрывает его сверху */}
             <div
-              className="absolute inset-0 flex items-center justify-center text-5xl"
+              className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden"
               style={{
-                background: "linear-gradient(135deg, #fce7f3 0%, #e9d5ff 100%)",
+                clipPath: "circle(50%)",
+                WebkitClipPath: "circle(50%)",
               }}
             >
-              🌸
+              {/* Фон-заглушка — всегда отображается, фото накрывает его сверху */}
+              <div
+                className="absolute inset-0 flex items-center justify-center text-5xl"
+                style={{
+                  background: "linear-gradient(135deg, #fce7f3 0%, #e9d5ff 100%)",
+                }}
+              >
+                🌸
+              </div>
+
+              {/* Фото пользователя — загружается поверх заглушки */}
+              {profile.avatar && !avatarError && (
+                <Image
+                  src={profile.avatar}
+                  alt={`Аватар ${profile.name}`}
+                  fill
+                  className="object-cover rounded-full"
+                  sizes="(max-width: 640px) 128px, 160px"
+                  priority
+                  onError={() => setAvatarError(true)}
+                />
+              )}
             </div>
-
-            {/* Фото пользователя — загружается поверх заглушки */}
-            {profile.avatar && !avatarError && (
-              <Image
-                src={profile.avatar}
-                alt={`Аватар ${profile.name}`}
-                fill
-                className="object-cover rounded-full"
-                sizes="(max-width: 640px) 128px, 160px"
-                priority
-                onError={() => setAvatarError(true)}
-              />
-            )}
-          </div>
-        </motion.div>
-
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* ── Имя ── */}

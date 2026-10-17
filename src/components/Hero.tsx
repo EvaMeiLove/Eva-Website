@@ -66,79 +66,71 @@ export default function Hero({ profile }: HeroProps) {
       initial="hidden"
       animate="visible"
     >
-      {/* ── Аватар с анимацией свечения ── */}
-      <motion.div className="relative" variants={avatarVariants}>
-        {/* Градиентное кольцо: клип снаружи (без transform), вращение внутри —
-            иначе после скролла виден квадрат вместо круга */}
+      {/* ── Аватар: без квадратных подложек (bg-white / box-shadow на square) ── */}
+      <motion.div
+        className="relative w-32 h-32 sm:w-40 sm:h-40"
+        variants={avatarVariants}
+      >
+        {/* Полое градиентное кольцо через mask — углы квадрата никогда не видны */}
         <div
-          className="absolute inset-[-8px] rounded-full overflow-hidden pointer-events-none"
+          aria-hidden
+          className="absolute -inset-2 pointer-events-none"
           style={{
-            clipPath: "circle(50%)",
-            WebkitClipPath: "circle(50%)",
-          }}
-        >
-          <div
-            className="h-full w-full"
-            style={{
-              background:
-                "conic-gradient(from 0deg, #f472b6, #c084fc, #f9a8d4, #e9d5ff, #f472b6)",
-              opacity: 0.7,
-              animation: "avatarRingSpin 8s linear infinite",
-            }}
-          />
-        </div>
-
-        {/* Белый разделитель */}
-        <div
-          className="absolute inset-[-3px] rounded-full overflow-hidden bg-white/80 pointer-events-none"
-          style={{
-            clipPath: "circle(50%)",
-            WebkitClipPath: "circle(50%)",
+            borderRadius: "50%",
+            background:
+              "conic-gradient(from 0deg, #f472b6, #c084fc, #f9a8d4, #e9d5ff, #f472b6)",
+            opacity: 0.75,
+            WebkitMaskImage:
+              "radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px))",
+            maskImage:
+              "radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px))",
+            animation: "avatarRingSpin 8s linear infinite",
           }}
         />
 
-        {/* Свечение снаружи клиппинга, чтобы тень не обрезалась */}
+        {/* Свечение на круглом узле без transform — иначе box-shadow становится квадратом */}
         <div
-          className="relative"
-          style={{ animation: "pulseGlow 3s ease-in-out infinite" }}
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            borderRadius: "50%",
+            animation: "pulseGlow 3s ease-in-out infinite",
+            boxShadow: "0 0 0 3px rgba(255, 255, 255, 0.85)",
+          }}
+        />
+
+        {/* Hover отдельно от обрезки фото */}
+        <motion.div
+          className="relative h-full w-full"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
         >
-          <motion.div
-            className="relative"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{ borderRadius: "50%" }}
           >
             <div
-              className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden"
+              className="absolute inset-0 flex items-center justify-center text-5xl"
               style={{
-                clipPath: "circle(50%)",
-                WebkitClipPath: "circle(50%)",
+                background: "linear-gradient(135deg, #fce7f3 0%, #e9d5ff 100%)",
               }}
             >
-              {/* Фон-заглушка — всегда отображается, фото накрывает его сверху */}
-              <div
-                className="absolute inset-0 flex items-center justify-center text-5xl"
-                style={{
-                  background: "linear-gradient(135deg, #fce7f3 0%, #e9d5ff 100%)",
-                }}
-              >
-                🌸
-              </div>
-
-              {/* Фото пользователя — загружается поверх заглушки */}
-              {profile.avatar && !avatarError && (
-                <Image
-                  src={profile.avatar}
-                  alt={`Аватар ${profile.name}`}
-                  fill
-                  className="object-cover rounded-full"
-                  sizes="(max-width: 640px) 128px, 160px"
-                  priority
-                  onError={() => setAvatarError(true)}
-                />
-              )}
+              🌸
             </div>
-          </motion.div>
-        </div>
+
+            {profile.avatar && !avatarError && (
+              <Image
+                src={profile.avatar}
+                alt={`Аватар ${profile.name}`}
+                fill
+                className="object-cover"
+                style={{ borderRadius: "50%" }}
+                sizes="(max-width: 640px) 128px, 160px"
+                priority
+                onError={() => setAvatarError(true)}
+              />
+            )}
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* ── Имя ── */}
